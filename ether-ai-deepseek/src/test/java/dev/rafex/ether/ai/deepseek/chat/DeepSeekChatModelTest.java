@@ -48,11 +48,11 @@ class DeepSeekChatModelTest {
 
     @Test
     void shouldCallDeepSeekCompatibleChatCompletionEndpoint() throws Exception {
-        final var config = new DeepSeekConfig("deepseek-key", URI.create("http://127.0.0.1:" + server.getAddress()
-                .getPort()), null, Map.of("X-Test", "true"));
+        final var config = new DeepSeekConfig("deepseek-key",
+                URI.create("http://127.0.0.1:" + server.getAddress().getPort()), null, Map.of("X-Test", "true"));
         final var model = new DeepSeekChatModel(config);
-        final var response = model.generate(new AiChatRequest("deepseek-chat", List.of(AiMessage.user("ping")), 0.1d,
-                64));
+        final var response = model
+                .generate(new AiChatRequest("deepseek-chat", List.of(AiMessage.user("ping")), 0.1d, 64));
 
         assertEquals("pong", response.text());
         assertEquals("stop", response.finishReason());
@@ -66,10 +66,10 @@ class DeepSeekChatModelTest {
         authorization.set(exchange.getRequestHeaders().getFirst("Authorization"));
         requestBody.set(new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8));
 
-        final var payload = Map.of("id", "deepseek-test", "model", "deepseek-chat", "choices",
-                List.of(Map.of("index", 0, "message", Map.of("role", "assistant", "content", "pong"),
-                        "finish_reason", "stop")), "usage",
-                Map.of("prompt_tokens", 10, "completion_tokens", 4, "total_tokens", 14));
+        final var payload = Map.of(
+                "id", "deepseek-test", "model", "deepseek-chat", "choices", List.of(Map.of("index", 0, "message",
+                        Map.of("role", "assistant", "content", "pong"), "finish_reason", "stop")),
+                "usage", Map.of("prompt_tokens", 10, "completion_tokens", 4, "total_tokens", 14));
 
         final byte[] response = JsonUtils.toJsonBytes(payload);
         exchange.getResponseHeaders().add("Content-Type", "application/json");
