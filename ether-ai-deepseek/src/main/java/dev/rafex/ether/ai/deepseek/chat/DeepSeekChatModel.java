@@ -22,16 +22,35 @@ import dev.rafex.ether.ai.deepseek.config.DeepSeekConfig;
 import dev.rafex.ether.json.JsonCodec;
 import dev.rafex.ether.json.JsonUtils;
 
+/**
+ * Implementación de {@link AiChatModel} para la API de DeepSeek.
+ *
+ * <p>Envía solicitudes de chat completions a la API de DeepSeek y procesa las respuestas.</p>
+ */
 public final class DeepSeekChatModel implements AiChatModel {
 
     private final DeepSeekConfig config;
     private final HttpClient httpClient;
     private final JsonCodec jsonCodec;
 
+    /**
+     * Crea un modelo de chat DeepSeek usando la configuración proporcionada.
+     *
+     * @param config La configuración de DeepSeek.
+     * @throws NullPointerException si la configuración es nula.
+     */
     public DeepSeekChatModel(final DeepSeekConfig config) {
         this(config, HttpClient.newBuilder().connectTimeout(config.timeout()).build(), JsonUtils.codec());
     }
 
+    /**
+     * Crea un modelo de chat DeepSeek con configuración personalizada.
+     *
+     * @param config      La configuración de DeepSeek.
+     * @param httpClient  El cliente HTTP a utilizar.
+     * @param jsonCodec   El codificador JSON a utilizar.
+     * @throws NullPointerException si la configuración o el cliente HTTP son nulos.
+     */
     public DeepSeekChatModel(final DeepSeekConfig config, final HttpClient httpClient, final JsonCodec jsonCodec) {
         this.config = Objects.requireNonNull(config, "config");
         this.httpClient = Objects.requireNonNull(httpClient, "httpClient");
